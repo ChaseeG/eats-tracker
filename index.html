@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <title>Eats Acceptance Tracker</title>
+
+  <style>
+    /* ---------- Reset & Base ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
+    body {
+      background-color: #fff;
+      color: #333;
+      line-height: 1.4;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      font: inherit;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    p {
+      margin: 0;
+    }
+
+    /* ---------- Layout ---------- */
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .heading {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+
+    /* ---------- Current Rate ---------- */
+    .rate-box {
+      text-align: center;
+    }
+    .rate-label {
+      font-size: 16px;
+      color: #555;
+    }
+    .rate-value {
+      font-size: 48px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* ---------- Oldest to Drop ---------- */
+    .oldest-box {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    /* ---------- Projections ---------- */
+    .projections {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+    .proj-card {
+      flex: 1;
+      text-align: center;
+    }
+    .proj-card + .proj-card {
+      margin-left: 8px;
+    }
+    .proj-label {
+      font-size: 14px;
+      color: #555;
+    }
+    .proj-value {
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* ---------- Buttons ---------- */
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 16px;
+    }
+    .btn {
+      flex: 1;
+      margin: 0 8px;
+      padding: 12px 0;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .btn:first-child {
+      margin-left: 0;
+    }
+    .btn:last-child {
+      margin-right: 0;
+    }
+    .btn-accept {
+      background-color: #28a745;
+    }
+    .btn-decline {
+      background-color: #dc3545;
+    }
+
+    /* ---------- Next 10 to be Dropped ---------- */
+    .next-section {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 12px;
+    }
+    .next-header {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .next-empty {
+      font-size: 14px;
+      color: #999;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .next-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .next-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 4px;
+      border-bottom: 1px solid #eee;
+    }
+    .next-index {
+      width: 24px;
+      font-size: 14px;
+      color: #555;
+    }
+    .next-circle {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin: 0 6px;
+    }
+    .next-text {
+      font-size: 14px;
+    }
+    .next-timestamp {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+    .next-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------- History List ---------- */
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+    .history-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .clear-btn {
+      background-color: #e74c3c;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .history-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .history-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 4px;
+      border-bottom: 1px solid #eee;
+    }
+    .history-index {
+      width: 32px;
+      font-size: 14px;
+      color: #555;
+    }
+    .history-circle {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .history-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .history-status {
+      font-size: 14px;
+    }
+    .history-time {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+    .empty-history {
+      text-align: center;
+      font-size: 16px;
+      color: #999;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="heading">Eats Acceptance Tracker</h1>
+
+    <!-- Current Rate Section -->
+    <div class="section rate-box">
+      <div class="rate-label">Current Rate:</div>
+      <div id="currentRate" class="rate-value">0.0%</div>
+    </div>
+
+    <!-- Oldest to Drop -->
+    <div id="oldestText" class="oldest-box">Window isn’t full yet – no drop</div>
+
+    <!-- Projections -->
+    <div class="section projections">
+      <div class="proj-card">
+        <div class="proj-label">If Accept Next</div>
+        <div id="projAccept" class="proj-value" style="color: #28a745">0.0%</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-label">If Decline Next</div>
+        <div id="projDecline" class="proj-value" style="color: #dc3545">0.0%</div>
+      </div>
+    </div>
+
+    <!-- Accept / Decline Buttons -->
+    <div class="section buttons">
+      <div id="btnAccept" class="btn btn-accept">Accept</div>
+      <div id="btnDecline" class="btn btn-decline">Decline</div>
+    </div>
+
+    <!-- Next 10 to be Dropped -->
+    <div class="section next-section">
+      <div class="next-header">Next 10 to be dropped:</div>
+      <ul id="nextList" class="next-list"></ul>
+      <div id="nextEmpty" class="next-empty">Window isn’t full yet – no drops.</div>
+    </div>
+
+    <!-- History Header + Clear Button -->
+    <div class="history-header">
+      <div class="history-title">History (Last <span id="historyCount">0</span> events)</div>
+      <div id="btnClear" class="clear-btn">Clear All History</div>
+    </div>
+
+    <!-- History List -->
+    <ul id="historyList" class="history-list"></ul>
+    <div id="emptyHistory" class="empty-history">No events logged yet.</div>
+  </div>
+
+  <script>
+    (function () {
+      // ------ Constants & State ------
+      const STORAGE_KEY = 'last100Requests';
+      let requests = []; // Array<{ id: string, accepted: boolean, timestamp: number }>
+
+      // ------ DOM References ------
+      const currentRateEl = document.getElementById('currentRate');
+      const oldestTextEl = document.getElementById('oldestText');
+      const projAcceptEl = document.getElementById('projAccept');
+      const projDeclineEl = document.getElementById('projDecline');
+      const nextListEl = document.getElementById('nextList');
+      const nextEmptyEl = document.getElementById('nextEmpty');
+      const historyCountEl = document.getElementById('historyCount');
+      const historyListEl = document.getElementById('historyList');
+      const emptyHistoryEl = document.getElementById('emptyHistory');
+
+      const btnAccept = document.getElementById('btnAccept');
+      const btnDecline = document.getElementById('btnDecline');
+      const btnClear = document.getElementById('btnClear');
+
+      // ------ Utility Functions ------
+      function saveRequests() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(requests));
+      }
+
+      function loadRequests() {
+        const json = localStorage.getItem(STORAGE_KEY);
+        if (json) {
+          try {
+            requests = JSON.parse(json);
+          } catch {
+            requests = [];
+          }
+        } else {
+          requests = [];
+        }
+      }
+
+      function formatTime(ts) {
+        const d = new Date(ts);
+        return d.toLocaleString();
+      }
+
+      // Recalculates current rate + projections + updates UI
+      function recalcRates() {
+        const count = requests.length;
+        if (count === 0) {
+          updateRates(0, 0, 0);
+          return;
+        }
+
+        const acceptedCount = requests.filter((r) => r.accepted).length;
+        const current = (acceptedCount / count) * 100;
+
+        // Projection if Accept Next
+        let nextAcceptRate, nextDeclineRate;
+        if (count === 100) {
+          const droppedAccepted = requests[count - 1].accepted ? 1 : 0;
+          const newAcceptedIfAccept = acceptedCount - droppedAccepted + 1;
+          nextAcceptRate = (newAcceptedIfAccept / 100) * 100;
+
+          const newAcceptedIfDecline = acceptedCount - droppedAccepted;
+          nextDeclineRate = (newAcceptedIfDecline / 100) * 100;
+        } else {
+          nextAcceptRate = ((acceptedCount + 1) / (count + 1)) * 100;
+          nextDeclineRate = (acceptedCount / (count + 1)) * 100;
+        }
+
+        updateRates(current, nextAcceptRate, nextDeclineRate);
+      }
+
+      function updateRates(current, nextAccept, nextDecline) {
+        currentRateEl.textContent = current.toFixed(1) + '%';
+        projAcceptEl.textContent = nextAccept.toFixed(1) + '%';
+        projDeclineEl.textContent = nextDecline.toFixed(1) + '%';
+      }
+
+      function updateOldestText() {
+        if (requests.length === 100) {
+          const oldest = requests[99];
+          oldestTextEl.textContent = oldest.accepted
+            ? 'Oldest Entry (to drop): Accepted'
+            : 'Oldest Entry (to drop): Declined';
+        } else {
+          oldestTextEl.textContent = "Window isn’t full yet – no drop";
+        }
+      }
+
+      function updateNextList() {
+        nextListEl.innerHTML = '';
+        if (requests.length < 100) {
+          nextEmptyEl.style.display = 'block';
+          return;
+        }
+        nextEmptyEl.style.display = 'none';
+
+        // Next 10 are indexes 90..99, reversed so 99 shows first
+        const nextTen = requests.slice(90, 100).reverse();
+        nextTen.forEach((item, idx) => {
+          const li = document.createElement('li');
+          li.className = 'next-item';
+
+          const idxDiv = document.createElement('div');
+          idxDiv.className = 'next-index';
+          idxDiv.textContent = '#' + (idx + 1);
+
+          const circle = document.createElement('div');
+          circle.className = 'next-circle';
+          circle.style.backgroundColor = item.accepted ? '#28a745' : '#dc3545';
+
+          const info = document.createElement('div');
+          info.className = 'next-info';
+          const status = document.createElement('div');
+          status.className = 'next-text';
+          status.textContent = item.accepted ? 'Accepted' : 'Declined';
+          const time = document.createElement('div');
+          time.className = 'next-timestamp';
+          time.textContent = formatTime(item.timestamp);
+
+          info.appendChild(status);
+          info.appendChild(time);
+
+          li.appendChild(idxDiv);
+          li.appendChild(circle);
+          li.appendChild(info);
+
+          nextListEl.appendChild(li);
+        });
+      }
+
+      function updateHistoryList() {
+        historyCountEl.textContent = requests.length.toString();
+        historyListEl.innerHTML = '';
+
+        if (requests.length === 0) {
+          emptyHistoryEl.style.display = 'block';
+          return;
+        }
+        emptyHistoryEl.style.display = 'none';
+
+        requests.forEach((item, idx) => {
+          const li = document.createElement('li');
+          li.className = 'history-item';
+
+          const idxDiv = document.createElement('div');
+          idxDiv.className = 'history-index';
+          idxDiv.textContent = '#' + (idx + 1);
+
+          const circle = document.createElement('div');
+          circle.className = 'history-circle';
+          circle.style.backgroundColor = item.accepted ? '#28a745' : '#dc3545';
+
+          const info = document.createElement('div');
+          info.className = 'history-info';
+          const status = document.createElement('div');
+          status.className = 'history-status';
+          status.textContent = item.accepted ? 'Accepted' : 'Declined';
+          const time = document.createElement('div');
+          time.className = 'history-time';
+          time.textContent = formatTime(item.timestamp);
+
+          info.appendChild(status);
+          info.appendChild(time);
+
+          li.appendChild(idxDiv);
+          li.appendChild(circle);
+          li.appendChild(info);
+
+          historyListEl.appendChild(li);
+        });
+      }
+
+      // After any change, call these to refresh the UI
+      function refreshAll() {
+        recalcRates();
+        updateOldestText();
+        updateNextList();
+        updateHistoryList();
+      }
+
+      // ------ Event Handlers ------
+      btnAccept.addEventListener('click', () => {
+        const timestamp = Date.now();
+        const entry = { id: timestamp.toString(), accepted: true, timestamp };
+        let newArr = [entry, ...requests];
+        if (newArr.length > 100) newArr = newArr.slice(0, 100);
+        requests = newArr;
+        saveRequests();
+        refreshAll();
+      });
+
+      btnDecline.addEventListener('click', () => {
+        const timestamp = Date.now();
+        const entry = { id: timestamp.toString(), accepted: false, timestamp };
+        let newArr = [entry, ...requests];
+        if (newArr.length > 100) newArr = newArr.slice(0, 100);
+        requests = newArr;
+        saveRequests();
+        refreshAll();
+      });
+
+      btnClear.addEventListener('click', () => {
+        const first = window.confirm('Clear All History?\nAre you sure?');
+        if (!first) return;
+        const second = window.confirm('This action cannot be undone.\nConfirm clear?');
+        if (!second) return;
+        localStorage.removeItem(STORAGE_KEY);
+        requests = [];
+        refreshAll();
+      });
+
+      // ------ Initialization ------
+      loadRequests();
+      refreshAll();
+    })();
+  </script>
+</body>
+</html>
