@@ -9,6 +9,38 @@
   <title>Eats Acceptance Tracker</title>
 
   <style>
+    /* ---------- CSS Variables for Light/Dark Themes ---------- */
+    :root {
+      --bg-color: #fff;
+      --text-color: #333;
+      --subtext-color: #555;
+      --border-color: #eee;
+      --accepted-color: #28a745;
+      --declined-color: #dc3545;
+      --menu-bg: #fff;
+      --menu-border: #ccc;
+      --menu-hover-bg: #f2f2f2;
+      --button-bg-accept: #28a745;
+      --button-bg-decline: #dc3545;
+      --button-text: #fff;
+      --clear-bg: #e74c3c;
+    }
+    .dark-theme {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --subtext-color: #aaa;
+      --border-color: #333;
+      --accepted-color: #28a745;
+      --declined-color: #dc3545;
+      --menu-bg: #1e1e1e;
+      --menu-border: #444;
+      --menu-hover-bg: #2a2a2a;
+      --button-bg-accept: #28a745;
+      --button-bg-decline: #dc3545;
+      --button-text: #fff;
+      --clear-bg: #b71c1c;
+    }
+
     /* ---------- Reset & Base ---------- */
     * {
       box-sizing: border-box;
@@ -18,11 +50,14 @@
         Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     }
     body {
-      background-color: #fff;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       line-height: 1.4;
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
+    }
+    h1 {
+      margin-bottom: 12px;
     }
     button {
       cursor: pointer;
@@ -31,13 +66,6 @@
       background: none;
       font: inherit;
     }
-    h1,
-    h2,
-    h3,
-    h4,
-    p {
-      margin: 0;
-    }
 
     /* ---------- Layout ---------- */
     .container {
@@ -45,11 +73,19 @@
       margin: 0 auto;
       padding: 16px;
     }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .heading {
-      text-align: center;
       font-size: 24px;
       font-weight: 600;
-      margin-bottom: 12px;
+    }
+    .settings-btn {
+      font-size: 24px;
+      cursor: pointer;
+      user-select: none;
     }
     .section {
       margin-bottom: 20px;
@@ -61,7 +97,7 @@
     }
     .rate-label {
       font-size: 16px;
-      color: #555;
+      color: var(--subtext-color);
     }
     .rate-value {
       font-size: 48px;
@@ -74,7 +110,7 @@
       text-align: center;
       margin-top: 8px;
       font-size: 14px;
-      color: #333;
+      color: var(--text-color);
     }
 
     /* ---------- Projections ---------- */
@@ -92,7 +128,7 @@
     }
     .proj-label {
       font-size: 14px;
-      color: #555;
+      color: var(--subtext-color);
     }
     .proj-value {
       font-size: 24px;
@@ -111,7 +147,7 @@
       margin: 0 8px;
       padding: 12px 0;
       border-radius: 6px;
-      color: #fff;
+      color: var(--button-text);
       font-size: 16px;
       font-weight: 600;
       text-align: center;
@@ -123,26 +159,27 @@
       margin-right: 0;
     }
     .btn-accept {
-      background-color: #28a745;
+      background-color: var(--button-bg-accept);
     }
     .btn-decline {
-      background-color: #dc3545;
+      background-color: var(--button-bg-decline);
     }
 
     /* ---------- Next 10 to be Dropped ---------- */
     .next-section {
       margin-top: 20px;
-      border-top: 1px solid #eee;
+      border-top: 1px solid var(--border-color);
       padding-top: 12px;
     }
     .next-header {
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 8px;
+      color: var(--text-color);
     }
     .next-empty {
       font-size: 14px;
-      color: #999;
+      color: var(--subtext-color);
       text-align: center;
       margin-top: 8px;
     }
@@ -155,12 +192,12 @@
       display: flex;
       align-items: center;
       padding: 8px 4px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-color);
     }
     .next-index {
       width: 24px;
       font-size: 14px;
-      color: #555;
+      color: var(--subtext-color);
     }
     .next-circle {
       width: 12px;
@@ -170,10 +207,11 @@
     }
     .next-text {
       font-size: 14px;
+      color: var(--text-color);
     }
     .next-timestamp {
       font-size: 12px;
-      color: #888;
+      color: var(--subtext-color);
       margin-top: 2px;
     }
     .next-info {
@@ -183,23 +221,11 @@
 
     /* ---------- History List ---------- */
     .history-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 24px;
-      margin-bottom: 8px;
-    }
-    .history-title {
       font-size: 18px;
       font-weight: 600;
-    }
-    .clear-btn {
-      background-color: #e74c3c;
-      padding: 8px 12px;
-      border-radius: 6px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      color: var(--text-color);
     }
     .history-list {
       list-style: none;
@@ -210,12 +236,13 @@
       display: flex;
       align-items: center;
       padding: 8px 4px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
     }
     .history-index {
       width: 32px;
       font-size: 14px;
-      color: #555;
+      color: var(--subtext-color);
     }
     .history-circle {
       width: 16px;
@@ -230,24 +257,124 @@
     }
     .history-status {
       font-size: 14px;
+      color: var(--text-color);
     }
     .history-time {
       font-size: 12px;
-      color: #888;
+      color: var(--subtext-color);
       margin-top: 2px;
     }
     .empty-history {
       text-align: center;
       font-size: 16px;
-      color: #999;
+      color: var(--subtext-color);
       margin-top: 20px;
+    }
+
+    /* ---------- Show/Hide Toggle Button ---------- */
+    .toggle-history-btn {
+      display: block;
+      text-align: center;
+      margin: 12px auto;
+      font-size: 14px;
+      color: var(--accepted-color);
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-history-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Three‐Dot Menu Styles ---------- */
+    .menu-icon {
+      width: 24px;
+      font-size: 20px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      margin-left: 8px;
+      color: var(--text-color);
+    }
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      right: 4px;
+      top: 32px;
+      background: var(--menu-bg);
+      border: 1px solid var(--menu-border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      border-radius: 4px;
+      z-index: 10;
+    }
+    .menu-dropdown li {
+      list-style: none;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      color: var(--text-color);
+    }
+    .menu-dropdown li:hover {
+      background-color: var(--menu-hover-bg);
+    }
+    .menu-container {
+      position: relative;
+    }
+
+    /* ---------- Settings Panel Styles ---------- */
+    .settings-panel {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 260px;
+      height: 100%;
+      background: var(--menu-bg);
+      border-left: 1px solid var(--menu-border);
+      box-shadow: -2px 0 6px rgba(0,0,0,0.15);
+      padding: 16px;
+      z-index: 20;
+    }
+    .settings-panel h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: var(--text-color);
+    }
+    .settings-item {
+      margin-bottom: 16px;
+      color: var(--text-color);
+    }
+    .settings-item label {
+      font-size: 14px;
+      color: var(--text-color);
+    }
+    .settings-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+    .settings-clear {
+      background-color: var(--clear-bg);
+      color: var(--button-text);
+      padding: 8px 12px;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1 class="heading">Eats Acceptance Tracker</h1>
+    <div class="header-bar">
+      <h1 class="heading">Eats Acceptance Tracker</h1>
+      <div id="settingsBtn" class="settings-btn">☰</div>
+    </div>
 
     <!-- Current Rate Section -->
     <div class="section rate-box">
@@ -262,11 +389,15 @@
     <div class="section projections">
       <div class="proj-card">
         <div class="proj-label">If Accept Next</div>
-        <div id="projAccept" class="proj-value" style="color: #28a745">0.0%</div>
+        <div id="projAccept" class="proj-value" style="color: var(--accepted-color)">
+          0.0%
+        </div>
       </div>
       <div class="proj-card">
         <div class="proj-label">If Decline Next</div>
-        <div id="projDecline" class="proj-value" style="color: #dc3545">0.0%</div>
+        <div id="projDecline" class="proj-value" style="color: var(--declined-color)">
+          0.0%
+        </div>
       </div>
     </div>
 
@@ -280,27 +411,49 @@
     <div class="section next-section">
       <div class="next-header">Next 10 to be dropped:</div>
       <ul id="nextList" class="next-list"></ul>
-      <div id="nextEmpty" class="next-empty">Window isn’t full yet – no drops.</div>
+      <div id="nextEmpty" class="next-empty">
+        Window isn’t full yet – no drops.
+      </div>
     </div>
 
-    <!-- History Header + Clear Button -->
-    <div class="history-header">
-      <div class="history-title">History (Last <span id="historyCount">0</span> events)</div>
-      <div id="btnClear" class="clear-btn">Clear All History</div>
-    </div>
+    <!-- History Header -->
+    <div class="history-header">History (Last <span id="historyCount">0</span> events)</div>
 
-    <!-- History List -->
+    <!-- History List (initially shows only up to 10) -->
     <ul id="historyList" class="history-list"></ul>
-    <div id="emptyHistory" class="empty-history">No events logged yet.</div>
+    <div id="emptyHistory" class="empty-history">
+      No events logged yet.
+    </div>
+    <!-- “Show More” / “Show Less” toggle -->
+    <div id="toggleHistoryBtn" class="toggle-history-btn">Show More</div>
+  </div>
+
+  <!-- Settings Panel -->
+  <div id="settingsPanel" class="settings-panel">
+    <div id="closeSettings" class="settings-close">✕</div>
+    <h2>Settings</h2>
+
+    <div class="settings-item">
+      <label>
+        <input type="checkbox" id="themeToggle" />
+        Dark Mode
+      </label>
+    </div>
+    <div class="settings-item">
+      <div id="clearHistoryInSettings" class="settings-clear">
+        Clear All History
+      </div>
+    </div>
   </div>
 
   <script>
     (function () {
-      // ------ Constants & State ------
       const STORAGE_KEY = 'last100Requests';
-      let requests = []; // Array<{ id: string, accepted: boolean, timestamp: number }>
+      const THEME_KEY = 'eatstracker_theme';
+      let requests = [];
+      let showFullHistory = false; // controls whether all or only 10 are shown
 
-      // ------ DOM References ------
+      // DOM references
       const currentRateEl = document.getElementById('currentRate');
       const oldestTextEl = document.getElementById('oldestText');
       const projAcceptEl = document.getElementById('projAccept');
@@ -310,46 +463,41 @@
       const historyCountEl = document.getElementById('historyCount');
       const historyListEl = document.getElementById('historyList');
       const emptyHistoryEl = document.getElementById('emptyHistory');
+      const toggleHistoryBtn = document.getElementById('toggleHistoryBtn');
 
       const btnAccept = document.getElementById('btnAccept');
       const btnDecline = document.getElementById('btnDecline');
-      const btnClear = document.getElementById('btnClear');
 
-      // ------ Utility Functions ------
+      const settingsBtn = document.getElementById('settingsBtn');
+      const settingsPanel = document.getElementById('settingsPanel');
+      const closeSettings = document.getElementById('closeSettings');
+      const themeToggle = document.getElementById('themeToggle');
+      const clearHistoryInSettings = document.getElementById('clearHistoryInSettings');
+
       function saveRequests() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(requests));
       }
-
       function loadRequests() {
         const json = localStorage.getItem(STORAGE_KEY);
-        if (json) {
-          try {
-            requests = JSON.parse(json);
-          } catch {
-            requests = [];
-          }
-        } else {
+        try {
+          requests = json ? JSON.parse(json) : [];
+        } catch {
           requests = [];
         }
       }
-
       function formatTime(ts) {
-        const d = new Date(ts);
-        return d.toLocaleString();
+        return new Date(ts).toLocaleString();
       }
 
-      // Recalculates current rate + projections + updates UI
       function recalcRates() {
         const count = requests.length;
         if (count === 0) {
           updateRates(0, 0, 0);
           return;
         }
-
         const acceptedCount = requests.filter((r) => r.accepted).length;
         const current = (acceptedCount / count) * 100;
 
-        // Projection if Accept Next
         let nextAcceptRate, nextDeclineRate;
         if (count === 100) {
           const droppedAccepted = requests[count - 1].accepted ? 1 : 0;
@@ -362,10 +510,8 @@
           nextAcceptRate = ((acceptedCount + 1) / (count + 1)) * 100;
           nextDeclineRate = (acceptedCount / (count + 1)) * 100;
         }
-
         updateRates(current, nextAcceptRate, nextDeclineRate);
       }
-
       function updateRates(current, nextAccept, nextDecline) {
         currentRateEl.textContent = current.toFixed(1) + '%';
         projAcceptEl.textContent = nextAccept.toFixed(1) + '%';
@@ -391,7 +537,6 @@
         }
         nextEmptyEl.style.display = 'none';
 
-        // Next 10 are indexes 90..99, reversed so 99 shows first
         const nextTen = requests.slice(90, 100).reverse();
         nextTen.forEach((item, idx) => {
           const li = document.createElement('li');
@@ -403,7 +548,9 @@
 
           const circle = document.createElement('div');
           circle.className = 'next-circle';
-          circle.style.backgroundColor = item.accepted ? '#28a745' : '#dc3545';
+          circle.style.backgroundColor = item.accepted
+            ? 'var(--accepted-color)'
+            : 'var(--declined-color)';
 
           const info = document.createElement('div');
           info.className = 'next-info';
@@ -431,11 +578,16 @@
 
         if (requests.length === 0) {
           emptyHistoryEl.style.display = 'block';
+          toggleHistoryBtn.style.display = 'none';
           return;
         }
         emptyHistoryEl.style.display = 'none';
 
-        requests.forEach((item, idx) => {
+        // Determine how many to render:
+        const toShow = showFullHistory ? requests.length : Math.min(requests.length, 10);
+
+        for (let idx = 0; idx < toShow; idx++) {
+          const item = requests[idx];
           const li = document.createElement('li');
           li.className = 'history-item';
 
@@ -445,7 +597,9 @@
 
           const circle = document.createElement('div');
           circle.className = 'history-circle';
-          circle.style.backgroundColor = item.accepted ? '#28a745' : '#dc3545';
+          circle.style.backgroundColor = item.accepted
+            ? 'var(--accepted-color)'
+            : 'var(--declined-color)';
 
           const info = document.createElement('div');
           info.className = 'history-info';
@@ -459,15 +613,74 @@
           info.appendChild(status);
           info.appendChild(time);
 
+          // Build menu container
+          const menuContainer = document.createElement('div');
+          menuContainer.className = 'menu-container';
+
+          // Three-dot icon
+          const menuIcon = document.createElement('div');
+          menuIcon.className = 'menu-icon';
+          menuIcon.textContent = '⋮';
+          menuContainer.appendChild(menuIcon);
+
+          // Dropdown list
+          const dropdown = document.createElement('ul');
+          dropdown.className = 'menu-dropdown';
+
+          const liAccept = document.createElement('li');
+          liAccept.textContent = 'Mark as Accepted';
+          liAccept.addEventListener('click', (e) => {
+            e.stopPropagation();
+            requests[idx].accepted = true;
+            saveRequests();
+            closeAllMenus();
+            refreshAll();
+          });
+          const liDecline = document.createElement('li');
+          liDecline.textContent = 'Mark as Declined';
+          liDecline.addEventListener('click', (e) => {
+            e.stopPropagation();
+            requests[idx].accepted = false;
+            saveRequests();
+            closeAllMenus();
+            refreshAll();
+          });
+
+          dropdown.appendChild(liAccept);
+          dropdown.appendChild(liDecline);
+          menuContainer.appendChild(dropdown);
+
+          // Show/hide dropdown when icon is clicked
+          menuIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeAllMenus();
+            dropdown.style.display = 'block';
+          });
+
           li.appendChild(idxDiv);
           li.appendChild(circle);
           li.appendChild(info);
+          li.appendChild(menuContainer);
 
           historyListEl.appendChild(li);
+        }
+
+        // If there are more than 10 and we're not showing full, show “Show More”;
+        // if we're showing full, show “Show Less”; otherwise hide the toggle.
+        if (requests.length > 10) {
+          toggleHistoryBtn.style.display = 'block';
+          toggleHistoryBtn.textContent = showFullHistory ? 'Show Less' : 'Show More';
+        } else {
+          toggleHistoryBtn.style.display = 'none';
+        }
+      }
+
+      function closeAllMenus() {
+        document.querySelectorAll('.menu-dropdown').forEach((menu) => {
+          menu.style.display = 'none';
         });
       }
 
-      // After any change, call these to refresh the UI
       function refreshAll() {
         recalcRates();
         updateOldestText();
@@ -475,20 +688,22 @@
         updateHistoryList();
       }
 
-      // ------ Event Handlers ------
+      document.addEventListener('click', () => {
+        closeAllMenus();
+      });
+
       btnAccept.addEventListener('click', () => {
-        const timestamp = Date.now();
-        const entry = { id: timestamp.toString(), accepted: true, timestamp };
+        const ts = Date.now();
+        const entry = { id: ts.toString(), accepted: true, timestamp: ts };
         let newArr = [entry, ...requests];
         if (newArr.length > 100) newArr = newArr.slice(0, 100);
         requests = newArr;
         saveRequests();
         refreshAll();
       });
-
       btnDecline.addEventListener('click', () => {
-        const timestamp = Date.now();
-        const entry = { id: timestamp.toString(), accepted: false, timestamp };
+        const ts = Date.now();
+        const entry = { id: ts.toString(), accepted: false, timestamp: ts };
         let newArr = [entry, ...requests];
         if (newArr.length > 100) newArr = newArr.slice(0, 100);
         requests = newArr;
@@ -496,18 +711,70 @@
         refreshAll();
       });
 
-      btnClear.addEventListener('click', () => {
+      // Toggle between “Show More” / “Show Less”
+      toggleHistoryBtn.addEventListener('click', () => {
+        showFullHistory = !showFullHistory;
+        refreshAll();
+      });
+
+      // Settings panel toggle
+      settingsBtn.addEventListener('click', () => {
+        settingsPanel.style.display = 'block';
+      });
+      closeSettings.addEventListener('click', () => {
+        settingsPanel.style.display = 'none';
+      });
+
+      // Theme toggle logic
+      function applyStoredTheme() {
+        const stored = localStorage.getItem(THEME_KEY);
+        if (stored === 'dark') {
+          document.body.classList.add('dark-theme');
+          themeToggle.checked = true;
+        } else {
+          document.body.classList.remove('dark-theme');
+          themeToggle.checked = false;
+        }
+      }
+      themeToggle.addEventListener('change', () => {
+        if (themeToggle.checked) {
+          document.body.classList.add('dark-theme');
+          localStorage.setItem(THEME_KEY, 'dark');
+        } else {
+          document.body.classList.remove('dark-theme');
+          localStorage.setItem(THEME_KEY, 'light');
+        }
+      });
+
+      // Clear all history within settings
+      clearHistoryInSettings.addEventListener('click', () => {
         const first = window.confirm('Clear All History?\nAre you sure?');
         if (!first) return;
-        const second = window.confirm('This action cannot be undone.\nConfirm clear?');
+        const second = window.confirm(
+          'This action cannot be undone.\nConfirm clear?'
+        );
         if (!second) return;
         localStorage.removeItem(STORAGE_KEY);
         requests = [];
         refreshAll();
+        settingsPanel.style.display = 'none';
       });
 
-      // ------ Initialization ------
+      function saveRequests() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(requests));
+      }
+      function loadRequests() {
+        const json = localStorage.getItem(STORAGE_KEY);
+        try {
+          requests = json ? JSON.parse(json) : [];
+        } catch {
+          requests = [];
+        }
+      }
+
+      // Initialize everything
       loadRequests();
+      applyStoredTheme();
       refreshAll();
     })();
   </script>
